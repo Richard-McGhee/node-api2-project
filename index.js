@@ -22,6 +22,22 @@ server.get("/api/posts", (req, res) => {
     })
 })
 
+server.get("/api/posts/:id", (req, res) => {
+    const id = Number(req.params.id)
+
+    db.findById(id)
+    .then(post => {
+        if(post.length === 1){
+            res.status(200).json({ data: post })
+        } else{
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: "The post information could not be retrieved." })
+    })
+})
+
 server.post("/api/posts", (req, res) => {
     const { title, contents } = req.body
 
