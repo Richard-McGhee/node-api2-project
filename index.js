@@ -54,5 +54,21 @@ server.post("/api/posts", (req, res) => {
     }
 })
 
+server.delete("/api/posts/:id", (req, res) => {
+    const id = Number(req.params.id)
+
+    db.remove(id)
+    .then(post => {
+        if(post){
+            res.status(204).end()
+        } else{
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: "The post could not be removed" })
+    })
+})
+
 const port = 666
 server.listen(port, () => console.log(`Server is up listening on Satan's port: ${port}`))
